@@ -18,6 +18,18 @@ namespace Lab2_24.Controllers
         };
 
         // endpoint 
+
+        [HttpDelete("byId")]
+        public List<Student> DeleteById(int Id){
+            students.RemoveAt(Id);
+            return students;
+        }
+
+       [HttpGet("ordered")]
+        public List<Student> getAllOrdered(){
+            return students.OrderBy(s => s.Age).ThenBy(s => s.Id).ToList();
+        }
+
         // Get 
         [HttpGet]
         public List<Student> Get()
