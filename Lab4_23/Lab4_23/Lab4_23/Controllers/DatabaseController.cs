@@ -54,5 +54,43 @@ namespace Lab4_23.Controllers
             
             return Ok(model1ById);
         }
+
+        [HttpGet("model2")]
+        public async Task<IActionResult> GetModel2()
+        {
+            return Ok(await _lab4Context.Models1.ToListAsync());
+        }
+
+        [HttpPost("model2")]
+        public async Task<IActionResult> Create(Model2DTO model2Dto)
+        {
+            var newModel2 = new Model2
+            {
+                Id = Guid.NewGuid(),
+                Name = model2Dto.Nume
+
+            };
+
+            await _lab4Context.AddAsync(newModel2);
+            await _lab4Context.SaveChangesAsync();
+
+            return Ok(newModel2);
+        }
+
+        [HttpPost("update2")]
+        public async Task<IActionResult> Update(Model2DTO model2Dto)
+        {
+            Model2 model2ById = await _lab4Context.Models2.FirstOrDefaultAsync(x => x.Id == model2Dto.Id);
+            if (model2ById == null)
+            {
+                return BadRequest("Object does not exist");
+            }
+
+            model2ById.Name = model2Dto.Nume;
+            _lab4Context.Update(model2ById);
+            await _lab4Context.SaveChangesAsync();
+
+            return Ok(model2ById);
+        }
     }
 }
